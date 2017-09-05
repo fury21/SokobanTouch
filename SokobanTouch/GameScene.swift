@@ -28,69 +28,70 @@ class GameScene: SKScene {
     let roomY = 5
     static let roomIcon = "◽️"
     
-    var newGameButton = [[SKLabelNode]()]
+    let fontSize: CGFloat = 60
+    
+    var board = [[SKLabelNode]()]
     
     enum Direction {
         case left
         case right
         case up
         case down
-        
     }
     
     
     func removePrint() {
         for x in 0...(roomX - 1) {
             for y in 0...(roomY - 1) {
-                newGameButton[x][y].removeFromParent()
+                board[x][y].removeFromParent()
             }
         }
     }
     
     func printBoard() {
         for ix in 0...(roomX - 1) {
-            if ix > 0 { newGameButton.append([SKLabelNode]()) }
+            if ix > 0 { board.append([SKLabelNode]()) }
             
             for iy in 0...(roomY - 1) {
                 
-                newGameButton[ix].append(SKLabelNode())
+                board[ix].append(SKLabelNode())
                 
                 switch (ix, iy) {
                 case let (x, y) where x == heroX && y == heroY:
-                    newGameButton[ix][iy].text = GameScene.heroIcon
-                    newGameButton[ix][iy].fontName = "Chalkboard SE Bold"  // задаем имя шрифта.
-                    newGameButton[ix][iy].fontColor = SKColor.white // задаем цвет шрифта.
-                    newGameButton[ix][iy].position = CGPoint(x: frame.minX + 100 + CGFloat(ix * 40), y: frame.midY - CGFloat(iy * 40))
-                    newGameButton[ix][iy].fontSize = 40 // задаем размер шрифта.
-                    newGameButton[ix][iy].name = "newGameButton[0]" // задаем имя спрайта
-                    self.addChild(newGameButton[ix][iy]) // добавляем на сцену
+                    board[ix][iy].text = GameScene.heroIcon
+                    board[ix][iy].fontName = "Chalkboard SE Bold"  // задаем имя шрифта.
+                    board[ix][iy].fontColor = SKColor.white // задаем цвет шрифта.
+                    board[ix][iy].position = CGPoint(x: frame.minX + 70 + CGFloat(ix * 60), y: frame.midY + 150 - CGFloat(iy * 60))
+                    board[ix][iy].fontSize = fontSize // задаем размер шрифта.
+                    board[ix][iy].name = "board[0]" // задаем имя спрайта
+                    self.addChild(board[ix][iy]) // добавляем на сцену
                     
                 case let (x, y) where x == Int(recycleX) && y == Int(recycleY):
-                    newGameButton[ix][iy].text = GameScene.recycleIcon
-                    newGameButton[ix][iy].fontName = "Chalkboard SE Bold"  // задаем имя шрифта.
-                    newGameButton[ix][iy].fontColor = SKColor.white // задаем цвет шрифта.
-                    newGameButton[ix][iy].position = CGPoint(x: frame.minX + 100 + CGFloat(ix * 40), y: frame.midY - CGFloat(iy * 40))
-                    newGameButton[ix][iy].fontSize = 40 // задаем размер шрифта.
-                    newGameButton[ix][iy].name = "newGameButton[0]" // задаем имя спрайта
-                    self.addChild(newGameButton[ix][iy]) // добавляем на сцену
+                    board[ix][iy].text = GameScene.recycleIcon
+                    board[ix][iy].fontName = "Chalkboard SE Bold"  // задаем имя шрифта.
+                    board[ix][iy].fontColor = SKColor.white // задаем цвет шрифта.
+                    board[ix][iy].position = CGPoint(x: frame.minX + 70 + CGFloat(ix * 60), y: frame.midY + 150 - CGFloat(iy * 60))
+                    board[ix][iy].fontSize = fontSize // задаем размер шрифта.
+                    board[ix][iy].name = "board[0]" // задаем имя спрайта
+                    self.addChild(board[ix][iy]) // добавляем на сцену
                     
                 case let (x, y) where x == Int(smokeX) && y == Int(smokeY):
-                    newGameButton[ix][iy].text = GameScene.smokeIcon
-                    newGameButton[ix][iy].fontName = "Chalkboard SE Bold"  // задаем имя шрифта.
-                    newGameButton[ix][iy].fontColor = SKColor.white // задаем цвет шрифта.
-                    newGameButton[ix][iy].position = CGPoint(x: frame.minX + 100 + CGFloat(ix * 40), y: frame.midY - CGFloat(iy * 40))
-                    newGameButton[ix][iy].fontSize = 40 // задаем размер шрифта.
-                    newGameButton[ix][iy].name = "newGameButton[0]" // задаем имя спрайта
-                    self.addChild(newGameButton[ix][iy]) // добавляем на сцену
+                    board[ix][iy].text = GameScene.smokeIcon
+                    board[ix][iy].fontName = "Chalkboard SE Bold"  // задаем имя шрифта.
+                    board[ix][iy].fontColor = SKColor.white // задаем цвет шрифта.
+                    board[ix][iy].position = CGPoint(x: frame.minX + 70 + CGFloat(ix * 60), y: frame.midY + 150 - CGFloat(iy * 60))
+                    board[ix][iy].fontSize = fontSize // задаем размер шрифта.
+                    board[ix][iy].name = "board[0]" // задаем имя спрайта
+                    self.addChild(board[ix][iy]) // добавляем на сцену
                     
                 default:
-                    newGameButton[ix][iy].text = GameScene.roomIcon
-                    newGameButton[ix][iy].fontName = "Chalkboard SE Bold"  // задаем имя шрифта.
-                    newGameButton[ix][iy].fontColor = SKColor.white // задаем цвет шрифта.
-                    newGameButton[ix][iy].position = CGPoint(x: frame.minX + 100 + CGFloat(ix * 40), y: frame.midY - CGFloat(iy * 40))
-                    newGameButton[ix][iy].fontSize = 40 // задаем размер шрифта.
-                    newGameButton[ix][iy].name = "newGameButton[0]" // задаем имя спрайта
-                    self.addChild(newGameButton[ix][iy]) // добавляем на сцену
+                    board[ix][iy].text = GameScene.roomIcon
+                    board[ix][iy].fontName = "Chalkboard SE Bold"  // задаем имя шрифта.
+                    board[ix][iy].fontColor = SKColor.white // задаем цвет шрифта.
+                    board[ix][iy].position = CGPoint(x: frame.minX + 70 + CGFloat(ix * 60), y: frame.midY + 150 - CGFloat(iy * 60))
+                    board[ix][iy].fontSize = fontSize // задаем размер шрифта.
+                    board[ix][iy].name = "board[0]" // задаем имя спрайта
+                    self.addChild(board[ix][iy]) // добавляем на сцену
                 }
             }
         }
@@ -107,12 +108,12 @@ class GameScene: SKScene {
         if pos.x == smokeX && pos.y == smokeY { // если кор-ды героя совпали с сигаретой
             
             switch dir {
-            case .up, .down: if smokeY - 1 < 0 || smokeY > roomY {
+            case .up, .down: if smokeY - 1 < 0 || smokeY + 2 > roomY {
                 print("Нельзя двигать сигарету за пределы поля")
                 printBoard()
                 return false
                 }
-            case .right, .left: if smokeX - 1 < 0 || smokeX > roomX {
+            case .right, .left: if smokeX - 1 < 0 || smokeX + 2 > roomX {
                 print("Нельзя двигать сигарету за пределы поля")
                 printBoard()
                 return false
@@ -184,7 +185,7 @@ class GameScene: SKScene {
         self.physicsBody?.allowsRotation = false
         // включаем отображение отладочной информации
         view.showsPhysics = true
-        // поворот против часовой стрелки
+        
         
         printBoard() // печатаем доску
         
@@ -233,11 +234,15 @@ class GameScene: SKScene {
         downButton.name = "downButton"
         self.addChild(downButton)
         
-        
-        //            // Делаем нашу сцену делегатом соприкосновений
-        //            self.physicsWorld.contactDelegate = self
-        //
-        
+        // кнопка рестарта игры
+        let restartGame = SKLabelNode()
+        restartGame.text = "Начать заново"
+        restartGame.fontName = "Chalkboard SE Bold"  // задаем имя шрифта.
+        restartGame.fontColor = SKColor.white // задаем цвет шрифта.
+        restartGame.position = CGPoint(x: frame.midX, y: frame.midY)
+        restartGame.fontSize = 40 // задаем размер шрифта.
+        restartGame.name = "board[0]" // задаем имя спрайта
+        self.addChild(restartGame) // добавляем на сцену
     }
     
     
@@ -248,9 +253,9 @@ class GameScene: SKScene {
             let location = (touch as! UITouch).location(in: self)
             
             if let name = self.atPoint(location).name {
-                if name == "newGameButton" {
+                if name == "board" {
                     
-                    //newGameButton.isHidden = true // прячем надпись
+                    //board.isHidden = true // прячем надпись
                 }
             }
         }
