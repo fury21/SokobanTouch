@@ -204,10 +204,6 @@ class GameScene: SKScene {
         
         // создаем кнопки управления
         
-        controlKeys() {
-            
-        }
-        
         // кнопка налево
         let leftButton = SKShapeNode()
         leftButton.path = UIBezierPath(ovalIn: CGRect(x: 0, y: 0, width: 45, height: 45)).cgPath
