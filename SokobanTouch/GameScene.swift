@@ -16,12 +16,12 @@ class GameScene: SKScene {
     var heroY = 0
     static let heroIcon = "🏃"
     
-    var recycleX = 3
-    var recycleY = 3
+    var recycleX = 1
+    var recycleY = 1
     static let recycleIcon = "🗑"
     
     var smokeX = 2
-    var smokeY = 3
+    var smokeY = 2
     static var smokeIcon = "🚬"
     
     let roomX = 5
@@ -201,61 +201,61 @@ class GameScene: SKScene {
         
         
         printBoard() // печатаем доску
+        restartGame() // расставляем эл-ты рандомно
+        
         
         // создаем кнопки управления
-        
         // кнопка налево
-        let leftButton = SKShapeNode()
-        leftButton.path = UIBezierPath(ovalIn: CGRect(x: 0, y: 0, width: 45, height: 45)).cgPath
-        leftButton.position = CGPoint(x: view.scene!.frame.minX+30, y: view.scene!.frame.minY+30)
-        leftButton.fillColor = UIColor.gray
-        leftButton.strokeColor = UIColor.gray
-        leftButton.lineWidth = 10
+        let leftButton = SKSpriteNode(imageNamed: "left.png")
+        leftButton.position = CGPoint(x: view.scene!.frame.minX + 70, y: view.scene!.frame.minY + 70)
         leftButton.name = "leftButton"
+        leftButton.size.width = CGFloat(100)
+        leftButton.size.height = CGFloat(100)
         self.addChild(leftButton)
         
-        
         // кнопка направо
-        let rightButton = SKShapeNode()
-        rightButton.path = UIBezierPath(ovalIn: CGRect(x: 0, y: 0, width: 45, height: 45)).cgPath
-        rightButton.position = CGPoint(x: view.scene!.frame.maxX-80, y: view.scene!.frame.minY+30)
-        rightButton.fillColor = UIColor.gray
-        rightButton.strokeColor = UIColor.gray
-        rightButton.lineWidth = 10
+        let rightButton = SKSpriteNode(imageNamed: "right.png")
+        rightButton.position = CGPoint(x: view.scene!.frame.maxX - 70, y: view.scene!.frame.minY + 70)
         rightButton.name = "rightButton"
+        rightButton.size.width = CGFloat(100)
+        rightButton.size.height = CGFloat(100)
         self.addChild(rightButton)
         
         
         // кнопка вверх
-        let upButton = SKShapeNode()
-        upButton.path = UIBezierPath(ovalIn: CGRect(x: 0, y: 0, width: 45, height: 45)).cgPath
-        upButton.position = CGPoint(x: view.scene!.frame.midX-30, y: view.scene!.frame.minY+100)
-        upButton.fillColor = UIColor.gray
-        upButton.strokeColor = UIColor.gray
-        upButton.lineWidth = 10
+        let upButton = SKSpriteNode(imageNamed: "up.png")
+        upButton.position = CGPoint(x: view.scene!.frame.midX, y: view.scene!.frame.minY + 180)
         upButton.name = "upButton"
+        upButton.size.width = CGFloat(100)
+        upButton.size.height = CGFloat(100)
         self.addChild(upButton)
         
         
         // кнопка вниз
-        let downButton = SKShapeNode()
-        downButton.path = UIBezierPath(ovalIn: CGRect(x: 0, y: 0, width: 45, height: 45)).cgPath
-        downButton.position = CGPoint(x: view.scene!.frame.midX-30, y: view.scene!.frame.minY+30)
-        downButton.fillColor = UIColor.gray
-        downButton.strokeColor = UIColor.gray
-        downButton.lineWidth = 10
+        let downButton = SKSpriteNode(imageNamed: "down.png")
+        downButton.position = CGPoint(x: view.scene!.frame.midX, y: view.scene!.frame.minY + 70)
         downButton.name = "downButton"
+        downButton.size.width = CGFloat(100)
+        downButton.size.height = CGFloat(100)
         self.addChild(downButton)
         
-        // кнопка рестарта игры
-        let restartGame = SKLabelNode()
-        restartGame.text = "Начать заново"
-        restartGame.fontName = "Chalkboard SE Bold"  // задаем имя шрифта.
-        restartGame.fontColor = SKColor.white // задаем цвет шрифта.
-        restartGame.position = CGPoint(x: frame.midX, y: frame.midY + 270)
-        restartGame.fontSize = 40 // задаем размер шрифта.
-        restartGame.name = "restartGame" // задаем имя спрайта
-        self.addChild(restartGame) // добавляем на сцену
+        // кнопка restart
+        let restart = SKSpriteNode(imageNamed: "restart.png")
+        restart.position = CGPoint(x: view.scene!.frame.maxX - 30, y: view.scene!.frame.maxY - 30)
+        restart.name = "restartGame"
+        restart.size.width = CGFloat(40)
+        restart.size.height = CGFloat(40)
+        self.addChild(restart)
+        
+        // кнопка-надпись рестарта игры
+//        let restartGame = SKLabelNode()
+//        restartGame.text = "Начать заново"
+//        restartGame.fontName = "Chalkboard SE Bold"  // задаем имя шрифта.
+//        restartGame.fontColor = SKColor.white // задаем цвет шрифта.
+//        restartGame.position = CGPoint(x: frame.midX, y: frame.midY + 270)
+//        restartGame.fontSize = 40 // задаем размер шрифта.
+//        restartGame.name = "restartGame" // задаем имя спрайта
+//        self.addChild(restartGame) // добавляем на сцену
     }
     
     
@@ -267,40 +267,21 @@ class GameScene: SKScene {
             
             if let name = self.atPoint(location).name {
                 if name == "restartGame" {
-                    
                     //board.isHidden = true // прячем надпись
                     restartGame()
+                } else if name == "leftButton" {
+                    removePrint()
+                    moveHero(.left)
+                } else if name == "rightButton" {
+                    removePrint()
+                    moveHero(.right)
+                } else if name == "upButton" {
+                    removePrint()
+                    moveHero(.up)
+                } else if name == "downButton" {
+                    removePrint()
+                    moveHero(.down)
                 }
-            }
-        }
-        
-        // перебираем все точки, куда прикоснулся палец
-        for touch in touches {
-            // определяем координаты касания для точки
-            let touchLocation = touch.location(in: self)
-            // проверяем, есть ли объект по этим координатам, и если есть, то не наша ли это кнопка
-            guard let touchedNode = self.atPoint(touchLocation) as? SKShapeNode,
-                touchedNode.name == "leftButton" || touchedNode.name == "rightButton" || touchedNode.name == "upButton" || touchedNode.name == "downButton"
-                else {
-                    return
-            }
-            
-            // если это наша кнопка, заливаем ее зеленой
-            touchedNode.fillColor = .green
-            
-            // определяем, какая кнопка нажата и поворачиваем в нужную сторону
-            if touchedNode.name == "leftButton" {
-                removePrint()
-                moveHero(.left)
-            } else if touchedNode.name == "rightButton" {
-                removePrint()
-                moveHero(.right)
-            } else if touchedNode.name == "upButton" {
-                removePrint()
-                moveHero(.up)
-            } else if touchedNode.name == "downButton" {
-                removePrint()
-                moveHero(.down)
             }
         }
     }
@@ -310,17 +291,7 @@ class GameScene: SKScene {
     
     // вызывается при прекращении нажатия на экран
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        // повторяем все то же самое для действия, когда палец отрывается от экрана
-        for touch in touches {
-            let touchLocation = touch.location(in: self)
-            guard let touchedNode = self.atPoint(touchLocation) as? SKShapeNode,
-                touchedNode.name == "leftButton" || touchedNode.name == "rightButton" || touchedNode.name == "upButton" || touchedNode.name == "downButton"
-                else {
-                    return
-            }
-            // но делаем цвет снова серый
-            touchedNode.fillColor = UIColor.gray
-        }
+     
     }
     // вызывается при обрыве нажатия на экран, например ,если телефон примет звонок и свернет приложение
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {

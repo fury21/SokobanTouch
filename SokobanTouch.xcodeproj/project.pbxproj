@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		38A79F561F60C4550039B473 /* left.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A79F551F60C4550039B473 /* left.png */; };
+		38A79F5A1F60CF930039B473 /* down.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A79F571F60CF930039B473 /* down.png */; };
+		38A79F5B1F60CF930039B473 /* right.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A79F581F60CF930039B473 /* right.png */; };
+		38A79F5C1F60CF930039B473 /* up.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A79F591F60CF930039B473 /* up.png */; };
+		38A79F5E1F60D4B30039B473 /* restart.png in Resources */ = {isa = PBXBuildFile; fileRef = 38A79F5D1F60D4B30039B473 /* restart.png */; };
 		38DFB83A1F5F4B790024EB9E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DFB8391F5F4B790024EB9E /* AppDelegate.swift */; };
 		38DFB8401F5F4B790024EB9E /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DFB83F1F5F4B790024EB9E /* GameScene.swift */; };
 		38DFB8421F5F4B790024EB9E /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38DFB8411F5F4B790024EB9E /* GameViewController.swift */; };
@@ -16,6 +21,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		38A79F551F60C4550039B473 /* left.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = left.png; sourceTree = "<group>"; };
+		38A79F571F60CF930039B473 /* down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = down.png; sourceTree = "<group>"; };
+		38A79F581F60CF930039B473 /* right.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = right.png; sourceTree = "<group>"; };
+		38A79F591F60CF930039B473 /* up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = up.png; sourceTree = "<group>"; };
+		38A79F5D1F60D4B30039B473 /* restart.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = restart.png; sourceTree = "<group>"; };
 		38DFB8361F5F4B790024EB9E /* SokobanTouch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SokobanTouch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		38DFB8391F5F4B790024EB9E /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		38DFB83F1F5F4B790024EB9E /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
@@ -37,6 +47,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		38A79F541F60C4550039B473 /* Arrows */ = {
+			isa = PBXGroup;
+			children = (
+				38A79F5D1F60D4B30039B473 /* restart.png */,
+				38A79F571F60CF930039B473 /* down.png */,
+				38A79F581F60CF930039B473 /* right.png */,
+				38A79F591F60CF930039B473 /* up.png */,
+				38A79F551F60C4550039B473 /* left.png */,
+			);
+			path = Arrows;
+			sourceTree = "<group>";
+		};
 		38DFB82D1F5F4B790024EB9E = {
 			isa = PBXGroup;
 			children = (
@@ -56,6 +78,7 @@
 		38DFB8381F5F4B790024EB9E /* SokobanTouch */ = {
 			isa = PBXGroup;
 			children = (
+				38A79F541F60C4550039B473 /* Arrows */,
 				38DFB8391F5F4B790024EB9E /* AppDelegate.swift */,
 				38DFB83F1F5F4B790024EB9E /* GameScene.swift */,
 				38DFB8411F5F4B790024EB9E /* GameViewController.swift */,
@@ -127,8 +150,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				38A79F5C1F60CF930039B473 /* up.png in Resources */,
+				38A79F5B1F60CF930039B473 /* right.png in Resources */,
 				38DFB8451F5F4B790024EB9E /* Main.storyboard in Resources */,
+				38A79F5E1F60D4B30039B473 /* restart.png in Resources */,
+				38A79F5A1F60CF930039B473 /* down.png in Resources */,
 				38DFB8471F5F4B790024EB9E /* Assets.xcassets in Resources */,
+				38A79F561F60C4550039B473 /* left.png in Resources */,
 				38DFB84A1F5F4B790024EB9E /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
