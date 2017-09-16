@@ -32,13 +32,14 @@ class GameScene: SKScene {
     
     var board = [[SKLabelNode]()]
     
+    var delegateView: GameSceneDelegate?
+    
     enum Direction {
         case left
         case right
         case up
         case down
     }
-    
     
     func removePrint() {
         for x in 0...(roomX - 1) {
@@ -87,7 +88,7 @@ class GameScene: SKScene {
             board[ix][iy].position = CGPoint(x: frame.minX + 70 + CGFloat(ix * 60), y: frame.midY + 150 - CGFloat(iy * 60))
             board[ix][iy].fontSize = fontSize // задаем размер шрифта.
             board[ix][iy].name = "board[0]" // задаем имя спрайта
-            self.addChild(board[ix][iy]) // добавляем на сцену
+            addChild(board[ix][iy]) // добавляем на сцену
         }
         for ix in 0...(roomX - 1) {
             if ix > 0 { board.append([SKLabelNode]()) }
@@ -113,7 +114,7 @@ class GameScene: SKScene {
     func checkBoarders(pos: (x: Int, y: Int), dir: Direction) -> Bool {
         // Если герой вышел за пределы поля.
         if pos.x < 0 || pos.x > (roomX - 1) || pos.y < 0 || pos.y > (roomY - 1) {
-            print("Нельзя выходить за пределы поля")
+            delegateView?.presentAlertView(title: "Внимание!", text: "Нельзя выходить за пределы поля")
             printBoard()
             return false
         }
@@ -122,12 +123,12 @@ class GameScene: SKScene {
             
             switch dir {
             case .up, .down: if smokeY - 1 < 0 || smokeY + 2 > roomY {
-                print("Нельзя двигать сигарету за пределы поля")
+                delegateView?.presentAlertView(title: "Внимание!", text: "Нельзя двигать сигарету за пределы поля")
                 printBoard()
                 return false
                 }
             case .right, .left: if smokeX - 1 < 0 || smokeX + 2 > roomX {
-                print("Нельзя двигать сигарету за пределы поля")
+                delegateView?.presentAlertView(title: "Внимание!", text: "Нельзя двигать сигарету за пределы поля")
                 printBoard()
                 return false
                 }
@@ -135,7 +136,8 @@ class GameScene: SKScene {
         }
         
         if pos.x == recycleX && pos.y == recycleY {
-            print("Вы не можете двигать корзину!")
+            delegateView?.presentAlertView(title: "Внимание!", text: "Вы не можете двигать корзину!")
+            
             printBoard()
             return false
         }
@@ -179,10 +181,25 @@ class GameScene: SKScene {
             GameScene.smokeIcon = "🗑"
             removePrint()
             printBoard()
-            print("Вы выкинули сигарету в мусорку и выиграли в игре! Поздравляем!")
+            
+            delegateView?.presentAlertView(title: "Поздравляем!", text: "Вы выкинули сигарету в мусорку и выиграли в игре!")
+            restartGame()
             
         }
     }
+    
+//    // генератор надписей
+//    func textNodeGenerator(text: String, name: String, x: CGFloat, y: CGFloat) -> SKLabelNode {
+//        let restartGame = SKLabelNode()
+//        restartGame.text = text
+//        restartGame.fontName = "Chalkboard SE Bold"  // задаем имя шрифта.
+//        restartGame.fontColor = SKColor.white // задаем цвет шрифта.
+//        restartGame.position = CGPoint(x: x, y: y)
+//        restartGame.fontSize = 40 // задаем размер шрифта.
+//        restartGame.name = name // задаем имя спрайта
+//        self.addChild(restartGame) // добавляем на сцену
+//        return restartGame
+//    }
     
     
     // вызывается при первом запуске сцены
@@ -202,42 +219,37 @@ class GameScene: SKScene {
         
         printBoard() // печатаем доску
         restartGame() // расставляем эл-ты рандомно
-        
+       
         
         // создаем кнопки управления
+      
+        func buttonControl(name: String, link: SKSpriteNode) {
+            link.name = name
+            link.size.width = CGFloat(100)
+            link.size.height = CGFloat(100)
+            addChild(link)
+        }
+        
         // кнопка налево
         let leftButton = SKSpriteNode(imageNamed: "left.png")
         leftButton.position = CGPoint(x: view.scene!.frame.minX + 70, y: view.scene!.frame.minY + 70)
-        leftButton.name = "leftButton"
-        leftButton.size.width = CGFloat(100)
-        leftButton.size.height = CGFloat(100)
-        self.addChild(leftButton)
+        buttonControl(name: "leftButton", link: leftButton)
         
         // кнопка направо
         let rightButton = SKSpriteNode(imageNamed: "right.png")
+        buttonControl(name: "rightButton", link: rightButton)
         rightButton.position = CGPoint(x: view.scene!.frame.maxX - 70, y: view.scene!.frame.minY + 70)
-        rightButton.name = "rightButton"
-        rightButton.size.width = CGFloat(100)
-        rightButton.size.height = CGFloat(100)
-        self.addChild(rightButton)
-        
         
         // кнопка вверх
         let upButton = SKSpriteNode(imageNamed: "up.png")
         upButton.position = CGPoint(x: view.scene!.frame.midX, y: view.scene!.frame.minY + 180)
-        upButton.name = "upButton"
-        upButton.size.width = CGFloat(100)
-        upButton.size.height = CGFloat(100)
-        self.addChild(upButton)
+        buttonControl(name: "upButton", link: upButton)
         
         
         // кнопка вниз
         let downButton = SKSpriteNode(imageNamed: "down.png")
         downButton.position = CGPoint(x: view.scene!.frame.midX, y: view.scene!.frame.minY + 70)
-        downButton.name = "downButton"
-        downButton.size.width = CGFloat(100)
-        downButton.size.height = CGFloat(100)
-        self.addChild(downButton)
+        buttonControl(name: "downButton", link: downButton)
         
         // кнопка restart
         let restart = SKSpriteNode(imageNamed: "restart.png")
@@ -247,15 +259,7 @@ class GameScene: SKScene {
         restart.size.height = CGFloat(40)
         self.addChild(restart)
         
-        // кнопка-надпись рестарта игры
-//        let restartGame = SKLabelNode()
-//        restartGame.text = "Начать заново"
-//        restartGame.fontName = "Chalkboard SE Bold"  // задаем имя шрифта.
-//        restartGame.fontColor = SKColor.white // задаем цвет шрифта.
-//        restartGame.position = CGPoint(x: frame.midX, y: frame.midY + 270)
-//        restartGame.fontSize = 40 // задаем размер шрифта.
-//        restartGame.name = "restartGame" // задаем имя спрайта
-//        self.addChild(restartGame) // добавляем на сцену
+        
     }
     
     
@@ -291,7 +295,7 @@ class GameScene: SKScene {
     
     // вызывается при прекращении нажатия на экран
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-     
+        
     }
     // вызывается при обрыве нажатия на экран, например ,если телефон примет звонок и свернет приложение
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {

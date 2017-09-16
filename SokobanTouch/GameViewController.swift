@@ -12,12 +12,17 @@ import GameplayKit
 
 class GameViewController: UIViewController {
     
+    var scene: GameScene?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // создаем экземпляр сцены
         let scene = GameScene(size: view.bounds.size)
+        scene.delegateView = self
         // получаем главную область экрана
-        let skView = view as! SKView
+        guard let skView = view as? SKView else {
+            return
+        }
         // включаем отображение fps (Количество кадров в секунду)
         skView.showsFPS = true
         // показывать количество объектов на экране
@@ -49,5 +54,19 @@ class GameViewController: UIViewController {
     
     override var prefersStatusBarHidden: Bool {
         return true
+    }
+}
+
+extension GameViewController: GameSceneDelegate {
+    func presentAlertView(title: String, text: String) {
+        //Создаем контроллер
+        let alter = UIAlertController(title: title, message: text, preferredStyle: .alert)
+        //Создаем кнопку для UIAlertController
+        let action = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+        //Добавляем кнопку на UIAlertController
+        alter.addAction(action)
+        //показываем UIAlertController
+        present(alter, animated: true)
+        //present(alter, animated: true, completion: nil)
     }
 }
