@@ -8,33 +8,33 @@
 
 import SpriteKit
 import GameplayKit
-
+import AudioToolbox
 
 class GameScene: SKScene {
     
     var heroX = 0
     var heroY = 0
-    static let heroIcon = "🏃"
     
     var recycleX = 1
     var recycleY = 1
-    static let recycleIcon = "🗑"
     
     var smokeX = 2
     var smokeY = 2
-    static var smokeIcon = "🚬"
     
     let roomX = 5
     let roomY = 5
-    static let roomIcon = "◽️"
     
     let fontSize: CGFloat = 60
-    
     var board = [[SKLabelNode]()]
     
     var delegateView: GameSceneDelegate?
     
-    enum Direction {
+    static let roomIcon = "◽️"
+    static var smokeIcon = "🚬"
+    static let heroIcon = "🏃"
+    static let recycleIcon = "🗑"
+    
+    private enum Direction {
         case left
         case right
         case up
@@ -50,27 +50,23 @@ class GameScene: SKScene {
     }
     
     func restartGame() {
-        func randomNum(maxNum: Int, minNum: Int) -> Int {
-            return Int(arc4random_uniform(UInt32(maxNum-minNum)) + 1) + minNum
-        }
+        heroX = Int.random(in: 0..<roomX) //randomNum(maxNum: 4, minNum: 0)
+        heroY = Int.random(in: 0..<roomY) //randomNum(maxNum: 4, minNum: 0)
         
-        heroX = randomNum(maxNum: 4, minNum: 0)
-        heroY = randomNum(maxNum: 4, minNum: 0)
+        smokeX = Int.random(in: 1..<roomX - 1) //randomNum(maxNum: roomX - 2, minNum: 1)
+        smokeY = Int.random(in: 1..<roomY - 1) //randomNum(maxNum: roomY - 2, minNum: 1)
         
-        smokeX = randomNum(maxNum: roomX - 2, minNum: 1)
-        smokeY = randomNum(maxNum: roomY - 2, minNum: 1)
-        
-        recycleX = randomNum(maxNum: 4, minNum: 0)
-        recycleY = randomNum(maxNum: 4, minNum: 0)
+        recycleX = Int.random(in: 0..<roomX) //randomNum(maxNum: 4, minNum: 0)
+        recycleY = Int.random(in: 0..<roomY) //randomNum(maxNum: 4, minNum: 0)
         
         while smokeX == heroX && smokeY == heroY || smokeX == recycleX && smokeY == recycleY {
-            smokeX = randomNum(maxNum: roomX - 2, minNum: 1)
-            smokeY = randomNum(maxNum: roomY - 2, minNum: 1)
+            smokeX = Int.random(in: 1..<roomX - 1) //randomNum(maxNum: roomX - 2, minNum: 1)
+            smokeY = Int.random(in: 1..<roomY - 1) //randomNum(maxNum: roomY - 2, minNum: 1)
         }
         
         while recycleX == heroX && recycleY == heroY {
-            recycleX = randomNum(maxNum: 4, minNum: 0)
-            recycleY = randomNum(maxNum: 4, minNum: 0)
+            recycleX = Int.random(in: 0..<roomX) //randomNum(maxNum: 4, minNum: 0)
+            recycleY = Int.random(in: 0..<roomY) //randomNum(maxNum: 4, minNum: 0)
         }
         
         removePrint()
@@ -111,7 +107,7 @@ class GameScene: SKScene {
         }
     }
     
-    func checkBoarders(pos: (x: Int, y: Int), dir: Direction) -> Bool {
+    private func checkBoarders(pos: (x: Int, y: Int), dir: Direction) -> Bool {
         // Если герой вышел за пределы поля.
         if pos.x < 0 || pos.x > (roomX - 1) || pos.y < 0 || pos.y > (roomY - 1) {
             delegateView?.presentAlertView(title: "Внимание!", text: "Нельзя выходить за пределы поля")
@@ -145,27 +141,31 @@ class GameScene: SKScene {
     }
     
     
-    func moveHero(_ dir: Direction) {
+    private func moveHero(_ dir: Direction) {
         switch dir {
         case .up:
+            UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
             if checkBoarders(pos: (x: heroX, y: heroY - 1), dir: .up) {
                 if heroY - 1 == smokeY && heroX == smokeX { heroY -= 1; smokeY -= 1 } else { heroY -= 1 }
                 printBoard()
                 win()
             }
         case .down:
+            UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
             if checkBoarders(pos: (x: heroX, y: heroY + 1), dir: .down) {
                 if heroY + 1 == smokeY && heroX == smokeX { heroY += 1; smokeY += 1 } else { heroY += 1 }
                 printBoard()
                 win()
             }
         case .left:
+            UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
             if checkBoarders(pos: (x: heroX - 1, y: heroY), dir: .left) {
                 if heroX - 1 == smokeX && heroY == smokeY  { heroX -= 1; smokeX -= 1 } else { heroX -= 1 }
                 printBoard()
                 win()
             }
         case .right:
+            UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
             if checkBoarders(pos: (x: heroX + 1, y: heroY), dir: .right) {
                 if heroX + 1 == smokeX && heroY == smokeY { heroX += 1; smokeX += 1 } else { heroX += 1 }
                 printBoard()

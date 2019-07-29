@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SokobanTouch/GameScene.swift"
-            timestampString = "527259932.401282"
+            timestampString = "586123250.648482"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "64"
-            endingLineNumber = "64"
+            startingLineNumber = "60"
+            endingLineNumber = "60"
             landmarkName = "restartGame()"
             landmarkType = "7">
          </BreakpointContent>
