@@ -33,6 +33,7 @@ class GameScene: SKScene {
     static var smokeIcon = "🚬"
     static let heroIcon = "🏃"
     static let recycleIcon = "🗑"
+    static var totalSteps = 0
     
     private enum Direction {
         case left
@@ -49,7 +50,7 @@ class GameScene: SKScene {
         }
     }
     
-    func restartGame() {
+    private func restartGame() {
         heroX = Int.random(in: 0..<roomX) //randomNum(maxNum: 4, minNum: 0)
         heroY = Int.random(in: 0..<roomY) //randomNum(maxNum: 4, minNum: 0)
         
@@ -72,11 +73,12 @@ class GameScene: SKScene {
         removePrint()
         GameScene.smokeIcon = "🚬"
         printBoard()
+        GameScene.totalSteps = 0
         
     }
     
     
-    func printBoard() {
+    private func printBoard() {
         func partOfFunc(_ ix: Int, _ iy: Int, _ text: String) {
             board[ix][iy].text = text
             board[ix][iy].fontName = "Chalkboard SE Bold"  // задаем имя шрифта.
@@ -137,6 +139,7 @@ class GameScene: SKScene {
             printBoard()
             return false
         }
+        
         return true
     }
     
@@ -147,6 +150,7 @@ class GameScene: SKScene {
             UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
             if checkBoarders(pos: (x: heroX, y: heroY - 1), dir: .up) {
                 if heroY - 1 == smokeY && heroX == smokeX { heroY -= 1; smokeY -= 1 } else { heroY -= 1 }
+                sumSteps()
                 printBoard()
                 win()
             }
@@ -154,6 +158,7 @@ class GameScene: SKScene {
             UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
             if checkBoarders(pos: (x: heroX, y: heroY + 1), dir: .down) {
                 if heroY + 1 == smokeY && heroX == smokeX { heroY += 1; smokeY += 1 } else { heroY += 1 }
+                sumSteps()
                 printBoard()
                 win()
             }
@@ -161,6 +166,7 @@ class GameScene: SKScene {
             UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
             if checkBoarders(pos: (x: heroX - 1, y: heroY), dir: .left) {
                 if heroX - 1 == smokeX && heroY == smokeY  { heroX -= 1; smokeX -= 1 } else { heroX -= 1 }
+                sumSteps()
                 printBoard()
                 win()
             }
@@ -168,23 +174,25 @@ class GameScene: SKScene {
             UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
             if checkBoarders(pos: (x: heroX + 1, y: heroY), dir: .right) {
                 if heroX + 1 == smokeX && heroY == smokeY { heroX += 1; smokeX += 1 } else { heroX += 1 }
+                sumSteps()
                 printBoard()
                 win()
             }
         }
     }
     
+    private func sumSteps() {
+        GameScene.totalSteps += 1
+    }
     
-    
-    func win() {
+    private func win() {
         if smokeX == recycleX && smokeY == recycleY {
             GameScene.smokeIcon = "🗑"
             removePrint()
             printBoard()
             
-            delegateView?.presentAlertView(title: "Поздравляем!", text: "Вы выкинули сигарету в мусорку и выиграли в игре!")
+            delegateView?.presentAlertView(title: "Поздравляем!", text: "Вы выкинули сигарету в мусорку и выиграли в игре за \(String(describing: GameScene.totalSteps)) шагов!")
             restartGame()
-            
         }
     }
     
@@ -258,8 +266,6 @@ class GameScene: SKScene {
         restart.size.width = CGFloat(40)
         restart.size.height = CGFloat(40)
         self.addChild(restart)
-        
-        
     }
     
     
